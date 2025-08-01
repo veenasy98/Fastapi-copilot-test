@@ -1,0 +1,31 @@
+name: fastapi-service
+type: Load Balanced Web Service
+
+image:
+  build: Dockerfile
+  port: 8000
+
+http:
+  path: '/'
+  healthcheck:
+    path: '/health'
+    healthy_threshold: 3
+    unhealthy_threshold: 5
+    interval: 10s
+    timeout: 5s
+
+cpu: 256
+memory: 512
+count: 2
+exec: true
+
+variables:
+  LOG_LEVEL: info
+
+environments:
+  test:
+    count: 1
+  prod:
+    count: 2
+    cpu: 512
+    memory: 1024
